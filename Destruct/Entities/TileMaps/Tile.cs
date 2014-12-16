@@ -94,22 +94,18 @@ namespace Destruct.Entities.TileMaps
             if (xAdd > 0)
             {
                 screenRect.X -= xAdd;
-                screenRect.Width += xAdd;
             }
-            else
+            else if (xAdd < 0)
             {
-                screenRect.X += xAdd;
-                screenRect.Width -= xAdd;
+                screenRect.X -= xAdd;
             }
             if (yAdd > 0)
             {
-                screenRect.Y -= yAdd;
-                screenRect.Height += yAdd;
+                screenRect.Y -= yAdd + Globals.scale;
             }
-            else
+            else if (yAdd < 0)
             {
-                screenRect.Height -= yAdd;
-                screenRect.Y += yAdd;
+                screenRect.Y -= yAdd + Globals.scale;
             }
             for (int i = 0; i < blocks.Count; i++)
             {

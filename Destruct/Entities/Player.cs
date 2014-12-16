@@ -68,7 +68,7 @@ namespace Destruct.Entities
         {
             if (builder.building)
                 return;
-            if (!map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, 0))
+            if (!map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w * Globals.scale, h * Globals.scale), 0, 0))
             {
                 oldX = x;
                 oldY = y;
@@ -77,50 +77,33 @@ namespace Destruct.Entities
             bool r = false;
             bool u = false;
             bool d = false;
+            int xAdd = 0;
+            int yAdd = 0;
             //if (NativeKeyboard.IsKeyDown(KeyCode.Left) || NativeKeyboard.IsKeyDown(KeyCode.A) && !map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), (2 * Globals.scale) + (speed * Globals.scale), 0))
             if (NativeKeyboard.IsKeyDown(KeyCode.Left) || NativeKeyboard.IsKeyDown(KeyCode.A))
-                l = true;
-            if (!NativeKeyboard.IsKeyDown(KeyCode.Left) && !NativeKeyboard.IsKeyDown(KeyCode.A))
-                l = false;
-            //if (NativeKeyboard.IsKeyDown(KeyCode.Right) || NativeKeyboard.IsKeyDown(KeyCode.D) && !map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), -(2 * Globals.scale) + -(speed * Globals.scale), 0))
+                xAdd += 4;
             if (NativeKeyboard.IsKeyDown(KeyCode.Right) || NativeKeyboard.IsKeyDown(KeyCode.D))
-                r = true;
-            if (!NativeKeyboard.IsKeyDown(KeyCode.Right) && !NativeKeyboard.IsKeyDown(KeyCode.D))
-                r = false;
-            //if (NativeKeyboard.IsKeyDown(KeyCode.Up) || NativeKeyboard.IsKeyDown(KeyCode.W) && !map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y, w, h), 0, 0))
+                xAdd -= 4;
             if (NativeKeyboard.IsKeyDown(KeyCode.Up) || NativeKeyboard.IsKeyDown(KeyCode.W))
-                u = true;
-            if (!NativeKeyboard.IsKeyDown(KeyCode.Up) && !NativeKeyboard.IsKeyDown(KeyCode.W))
-                u = false;
-            //if (NativeKeyboard.IsKeyDown(KeyCode.Down) || NativeKeyboard.IsKeyDown(KeyCode.S) && !map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, -(2 * Globals.scale) + -(speed * Globals.scale)))
+                yAdd += 4;
             if (NativeKeyboard.IsKeyDown(KeyCode.Down) || NativeKeyboard.IsKeyDown(KeyCode.S))
-                d = true;
-            if (!NativeKeyboard.IsKeyDown(KeyCode.Down) && !NativeKeyboard.IsKeyDown(KeyCode.S))
-                d = false;
-            if(map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, 0))
+                yAdd -= 4;
+            if (map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, 0))
             {
                 x = oldX;
                 y = oldY;
             }
-            if(l)
+            if (xAdd != 0 && yAdd != 0)
             {
-                if (!map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), speed, 0))
-                    x += speed;
+                if (map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), xAdd, 0) && !map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, yAdd))
+                    y += yAdd;
+                if (map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, yAdd) && !map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), xAdd, 0))
+                    x += xAdd;
             }
-            if (r)
+            if (!map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), xAdd, yAdd))
             {
-                if (!map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), -speed, 0))
-                    x -= speed;
-            }
-            if (u)
-            {
-                if (!map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, speed))
-                    y += speed;
-            }
-            if (d)
-            {
-                if (!map.IsColAtRect(new Rectangle(-x + Globals.halfScreenSize, -y + Globals.halfScreenSize, w, h), 0, speed))
-                    y += speed;
+                x += xAdd;
+                y += yAdd;
             }
         }
     }
