@@ -110,6 +110,8 @@ namespace Destruct.Entities.PlayerTools
                 }
 
             }
+            if (PauseDone())
+                building = false;
             pause--;
             oldSwitch = Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Shift) && Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.E);
         }
