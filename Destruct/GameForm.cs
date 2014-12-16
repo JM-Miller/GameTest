@@ -81,7 +81,7 @@ namespace Destruct
         }
         public void draw()
         {
-            g.FillRectangle(brush, 0, 0, this.Width, this.Height);
+            //g.FillRectangle(brush, 0, 0, this.Width, this.Height);
             gsm.Draw(g);
         }
 

@@ -11,6 +11,7 @@ namespace Destruct.GameStates
     {
         List<GameState> states;
         public GameState currentState;
+        public MainState currentSession;
 
         public void Init(GameForm form)
         {

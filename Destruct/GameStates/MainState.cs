@@ -18,6 +18,13 @@ namespace Destruct.GameStates
         List<Entities.Items.Item> items;
         TileMap map;
         public Player p;
+        bool isOldDownEsc;
+        public GameStateManager gsm;
+
+        public MainState(GameStateManager gsm)
+        {
+            this.gsm = gsm;
+        }
 
         public override void Init()
         {
@@ -42,12 +49,15 @@ namespace Destruct.GameStates
                 if (items[i].remove)
                     items.Remove(items[i]);
             }
+            if (Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.ESC) && !isOldDownEsc)
+                gsm.currentState = new InMenuState(this.gsm);
             if (Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.v0))
                 Globals.speed = 1;
             if (Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.v1))
                 Globals.speed = 5;
             if (Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.v2))
                 Globals.speed = 10;
+            isOldDownEsc = Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.ESC);
         }
         public override void Draw(Graphics g)
         {

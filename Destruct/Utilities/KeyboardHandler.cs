@@ -18,7 +18,7 @@ namespace Destruct.Utilities
         v0 = 0x30,
         v1 = 0x31,
         v2 = 0x32,
-
+        ESC = 0x1B,
         LeftMouse = 0x01,
 
         Left = 0x25,

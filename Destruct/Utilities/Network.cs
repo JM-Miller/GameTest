@@ -25,7 +25,7 @@ namespace Destruct.Utilities
         public static void Init()
         {
             IPHostEntry host;
-            string localIP = "192.16.0.13";
+            string localIP = "10.97.161.131";
             host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (IPAddress ip in host.AddressList)
             {
@@ -35,7 +35,7 @@ namespace Destruct.Utilities
                 }
             }
             IPAddress serverLoc = new IPAddress(localIP.Split('.').Select(i => byte.Parse(i)).ToArray());
-            tcpServer = new TcpListener(new System.Net.IPAddress(new byte[] {192, 168, 0, 13}), 13000);
+            tcpServer = new TcpListener(serverLoc, 13000);
             tcpServer.Start();
         }
         

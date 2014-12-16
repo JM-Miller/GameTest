@@ -49,7 +49,7 @@ namespace Destruct.Entities.TileMaps
                     if (iTiles[x][y] > 999)
                     {
                         Items.Item i = new Items.Ammo(y, x, this, map.state.p); ;
-                        switch (new Random().Next(1, 3))
+                        switch (new Random().Next(0, 3))
                         {
                             case 0:
                                 i = new Items.GunPickUp(y, x, this);

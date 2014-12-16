@@ -81,8 +81,8 @@ namespace Destruct.Entities.PlayerTools
             dir = Math.Atan2(xDiff, -yDiff);
             x = (int)(Globals.halfScreenSize + (p.w / 2) + (Math.Sin(dir) * p.w * Globals.scale * 1.5));
             y = (int)(Globals.halfScreenSize + (p.h / 2) + (-Math.Cos(dir) * p.h * Globals.scale * 1.5));
-            yPos = (int)((y / (Globals.defaultTileSize * Globals.scale)) * (Globals.defaultTileSize * Globals.scale) + (p.map.yOffset % (Globals.defaultTileSize * Globals.scale)));
-            xPos = (int)((x / (Globals.defaultTileSize * Globals.scale)) * (Globals.defaultTileSize * Globals.scale) + (p.map.xOffset % (Globals.defaultTileSize * Globals.scale)));
+            yPos = (int)((int)Math.Round((double)(y / (Globals.defaultTileSize * Globals.scale))) * (Globals.defaultTileSize * Globals.scale) + (p.map.yOffset % (Globals.defaultTileSize * Globals.scale)));
+            xPos = (int)((int)Math.Round((double)(x / (Globals.defaultTileSize * Globals.scale))) * (Globals.defaultTileSize * Globals.scale) + (p.map.xOffset % (Globals.defaultTileSize * Globals.scale)));
             if (oldSwitch && Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Shift) && Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.E) && !building)
                 SwitchType();
             if (numOfBlocks.Count > 0 && numOfBlocks[type] > 0 && Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Shift) && Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.LeftMouse) && !isOldKeyDown)
@@ -153,24 +153,26 @@ namespace Destruct.Entities.PlayerTools
                             pauseTime = 80;
                             break;
                 }
-                pause = pauseTime;
-                active = false;
-                building = true;
                 foreach (TileLayer tl2 in p.map.layers)
                 {
                     Rectangle rect = new Rectangle(tl2.xMapOffset * (Globals.defaultTileSize * Globals.scale) + p.map.xOffset - Globals.halfScreenSize, tl2.yMapOffset * (Globals.defaultTileSize * Globals.scale) + p.map.yOffset - Globals.halfScreenSize, tl2.tiles.Length * (Globals.defaultTileSize * Globals.scale), tl2.tiles.Length * (Globals.defaultTileSize * Globals.scale));
                     Rectangle interRect = new Rectangle(xPos - Globals.halfScreenSize, yPos - Globals.halfScreenSize, (Globals.defaultTileSize * Globals.scale), (Globals.defaultTileSize * Globals.scale));
                     if (rect.IntersectsWith(interRect))
                     {
-                        Rectangle screenRect = new Rectangle(Globals.halfScreenSize, Globals.halfScreenSize, rect.Width, rect.Height);
+                        Rectangle screenRect = new Rectangle(Globals.halfScreenSize, Globals.halfScreenSize, (Globals.defaultTileSize * Globals.scale), (Globals.defaultTileSize * Globals.scale));
 
-                        yCoord = ((int)Math.Round((double)((xPos) / (Globals.defaultTileSize * Globals.scale))) - tl2.xMapOffset - (p.map.xOffset / (Globals.defaultTileSize * Globals.scale)));
-                        xCoord = ((int)Math.Round((double)((yPos) / (Globals.defaultTileSize * Globals.scale))) - tl2.yMapOffset - (p.map.yOffset / (Globals.defaultTileSize * Globals.scale)));
+                        if (screenRect.IntersectsWith(new Rectangle(xPos, yPos, (Globals.defaultTileSize * Globals.scale), (Globals.defaultTileSize * Globals.scale))))
+                            return;
+                        yCoord = ((int)Math.Round((double)((xPos) / (Globals.defaultTileSize * Globals.scale))) - tl2.xMapOffset - (int)Math.Round((double)(p.map.xOffset / (Globals.defaultTileSize * Globals.scale))));
+                        xCoord = ((int)Math.Round((double)((yPos) / (Globals.defaultTileSize * Globals.scale))) - tl2.yMapOffset - (int)Math.Round((double)(p.map.yOffset / (Globals.defaultTileSize * Globals.scale))));
                         int[][][] iTiles = TileCreator.GetTestTiles();
                         if (xCoord < 0 || xCoord > iTiles[0].Length - 1 || yCoord < 0 || yCoord > iTiles[0].Length - 1)
                             continue;
                     }
                 }
+                pause = pauseTime;
+                active = false;
+                building = true;
             }
         }
         public bool PauseDone()

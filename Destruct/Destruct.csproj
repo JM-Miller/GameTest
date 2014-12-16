@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="GameStates\GameState.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
+    <Compile Include="GameStates\InMenuState.cs" />
     <Compile Include="GameStates\MainState.cs" />
     <Compile Include="GameStates\MenuState.cs" />
     <Compile Include="GameStates\MultiState.cs" />

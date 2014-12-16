@@ -8,19 +8,22 @@ using System.Windows.Forms;
 
 namespace Destruct.GameStates
 {
-    public class MenuState : GameState
+    public class InMenuState : GameState
     {
         int selected;
         bool isOldDown;
-        string[] options = new string[] { "Single Player", "Host Game", "Join Game", "Exit" };
+        string[] options = new string[] { "Continue", "Quit To Menu", "Exit" };
         GameStateManager gsm;
         bool isOldDownU;
         bool isOldDownD;
         bool isOldDownM;
+        bool isOldDownEsc;
+        bool isCleared = false;
 
-        public MenuState(GameStateManager gsm)
+        public InMenuState(GameStateManager gsm)
         {
             this.gsm = gsm;
+            isOldDownEsc = true;
         }
 
         public override void Init()
@@ -29,11 +32,14 @@ namespace Destruct.GameStates
 
         public override void Update()
         {
-            for (int i = 0; i < options.Length; i++ )
+            for (int i = 0; i < options.Length; i++)
             {
-                if(new Rectangle(0, 200 + (i * 25),1000, 1000).Contains(Globals.mouseX, Globals.mouseY))
+                if (new Rectangle(0, 200 + (i * 25), 1000, 1000).Contains(Globals.mouseX, Globals.mouseY))
                     selected = i;
             }
+            if (Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.ESC) && !isOldDownEsc)
+                gsm.currentState = gsm.currentSession;
+
             if (Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Up) && !isOldDownU)
                 if (selected > 0)
                     selected--;
@@ -51,31 +57,25 @@ namespace Destruct.GameStates
             isOldDownM = Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.LeftMouse);
             isOldDownU = Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Up);
             isOldDownD = Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Down);
+            isOldDownEsc = Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.ESC);
         }
 
         public void Select()
         {
             GameState state;
-            switch(selected)
+            switch (selected)
             {
                 case 0:
-                    gsm.currentSession = new MainState(this.gsm);
                     state = gsm.currentSession;
-                    state.Init();
                     gsm.currentState = state;
-                    
+
                     break;
                 case 1:
-                    state = new MultiState(true);
+                    state = new MenuState(gsm);
                     state.Init();
                     gsm.currentState = state;
                     break;
                 case 2:
-                    state = new MultiState(false);
-                    state.Init();
-                    gsm.currentState = state;
-                    break;
-                case 3:
                     Application.Exit();
                     break;
             }
@@ -83,14 +83,16 @@ namespace Destruct.GameStates
 
         public override void Draw(System.Drawing.Graphics g)
         {
-            g.FillRectangle(Brushes.brushBlack, 0, 0, Globals.screenSize, Globals.screenSize);
-            for(int i = 0; i < options.Length; i++)
+            if (!isCleared)
+                g.FillRectangle(new SolidBrush(Color.FromArgb(150, Color.Black)), 0, 0, Globals.screenSize, Globals.screenSize);
+            for (int i = 0; i < options.Length; i++)
             {
                 Color c = Color.SlateGray;
-                if(selected == i)
+                if (selected == i)
                     c = Color.White;
                 g.DrawString(options[i], new Font(FontFamily.GenericSansSerif, 20), new SolidBrush(c), new PointF(Globals.halfScreenSize, 200 + (i * 25)));
             }
+            isCleared = true;
         }
     }
 }
