@@ -30,6 +30,10 @@ namespace Destruct.Entities.Items
         public int reloadPause;
         public bool hasThisGun;
 
+        public GunPickUp()
+        {
+
+        }
         public GunPickUp(int x, int y, TileMaps.TileLayer l)
         {
             this.xPos = x;

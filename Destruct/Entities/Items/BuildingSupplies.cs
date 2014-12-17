@@ -10,6 +10,10 @@ namespace Destruct.Entities.Items
     public class BuildingSupplies : Item
     {
         Player p;
+        public BuildingSupplies()
+        {
+
+        }
         public BuildingSupplies(int x, int y, TileMaps.TileLayer l, Player p)
         {
             this.xPos = x;

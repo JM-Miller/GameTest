@@ -21,6 +21,11 @@ namespace Destruct.Entities.TileMaps
 
         public Tile[][] tiles;
 
+        public TileLayer()
+        {
+
+        }
+
         public TileLayer(int[][] iTiles, int s, int xOff, int yOff, TileMap map, int cellId, List<Items.Item> items)
         {
             this.size = s;

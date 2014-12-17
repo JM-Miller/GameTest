@@ -23,5 +23,6 @@ namespace Destruct.Entities.Items
         public abstract void Update(Player p);
         public abstract void Draw(Graphics g);
         public abstract void DrawText(System.Drawing.Graphics g);
+
     }
 }

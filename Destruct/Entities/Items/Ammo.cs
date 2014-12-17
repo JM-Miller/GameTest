@@ -10,6 +10,11 @@ namespace Destruct.Entities.Items
     public class Ammo : Item
     {
         Player p;
+        public Ammo()
+        {
+
+        }
+
         public Ammo(int x, int y, TileMaps.TileLayer l, Player p)
         {
             this.xPos = x;

@@ -43,7 +43,11 @@ namespace Destruct.Entities.TileMaps
         public TileLayer layer;
         public int opac;
         public List<Block> blocks;
+        
+        public Tile()
+        {
 
+        }
         public Tile(int x, int y, int s, SolidBrush b, bool vis, bool sol, int hits, TileLayer l, bool isRoof = false)
         {
             this.layerX = x;

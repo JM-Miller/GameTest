@@ -1,5 +1,6 @@
 ﻿using Destruct.Entities.Items;
 using Destruct.GameStates;
+using Destruct.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,6 +41,7 @@ namespace Destruct.Entities.TileMaps
         {
             cells = new List<TileCell>();
             layers = new List<TileLayer>();
+            SaveWriter.SavedTiles = new List<string>();
         }
         
         public void Update(int x, int y, List<Entities.Items.Item> items)
@@ -185,8 +187,10 @@ namespace Destruct.Entities.TileMaps
                     foreach(Tile[] tileArray in cellLayer.tiles)
                         health += (int)(tileArray.Where(i => i.solid).Count() * Globals.defaultTileSize * 4);
                 cell.health = health;
-                if (!isAlreadyLayer(cell.layers[0]))
+                if (!isAlreadyLayer(cell.layers[0]) && !DoesExistInSavedLayers(cell.layers[0]))
                 {
+                    string[] saved = cell.layers.Select(i => i.XmlSerialize<TileLayer>()).ToArray();
+                    SaveWriter.SavedTiles.AddRange(saved);
                     layers.AddRange(cell.layers);
                 }
                 else
@@ -196,6 +200,29 @@ namespace Destruct.Entities.TileMaps
                             items.Remove(i);
                 }
             }
+            foreach (TileLayer layer in layers)
+            {
+                Rectangle rect = new Rectangle((layer.xMapOffset * layer.size * Globals.scale) + xOffset, (layer.yMapOffset * layer.size * Globals.scale) + yOffset, (layer.tiles[0].Count() * layer.size * Globals.scale), (layer.tiles[0].Count() * layer.size * Globals.scale));
+                if (!rect.IntersectsWith(new Rectangle(0, 0, Globals.screenSize, Globals.screenSize)) || new Rectangle(0, 0, Globals.screenSize, Globals.screenSize).Contains(rect))
+                {
+                    layers.Remove(layer);
+                }
+            }
+        }
+
+        public bool DoesExistInSavedLayers(TileLayer tl)
+        {
+            List<TileLayer> saveLayers = new List<TileLayer>();
+            for (int i = 0; i < SaveWriter.SavedTiles.Count; i++ )
+            {
+                TileLayer sl = SaveWriter.SavedTiles[i].XmlDeserialize<TileLayer>();
+                if(sl.xMapOffset == tl.xMapOffset && sl.yMapOffset == tl.yMapOffset)
+                {
+                    layers.Add(sl);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool isAlreadyLayer(TileLayer tl)

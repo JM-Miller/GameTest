@@ -15,6 +15,12 @@ namespace Destruct
         public int screenSize;
         public Brush b;
 
+        
+        public Block()
+        {
+
+        }
+
         public Block(int x, int y, int s, Brush b)
         {
             this.xOff = x;
