@@ -25,3 +25,6 @@ H:\~~Senior\SideProjects\Sandboxes\Destruct\Destruct\obj\Debug\Destruct.Properti
 H:\~~Senior\SideProjects\Sandboxes\Destruct\Destruct\obj\Debug\Destruct.csproj.GenerateResource.Cache
 H:\~~Senior\SideProjects\Destruct\Destruct\obj\Debug\Brushes.resources
 C:\Users\Jack\Documents\Destruct\Destruct\obj\Debug\Brushes.resources
+D:\Documents\Projects\Games\GameTest\Destruct\bin\Debug\Destruct.exe.config
+D:\Documents\Projects\Games\GameTest\Destruct\obj\Debug\Destruct.exe
+D:\Documents\Projects\Games\GameTest\Destruct\obj\Debug\Destruct.pdb
