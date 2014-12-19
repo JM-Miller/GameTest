@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Destruct.Entities.TileMaps
 {
@@ -34,23 +35,64 @@ namespace Destruct.Entities.TileMaps
         public int xOff;
         public int yOff;
         public int size;
+        [XmlIgnore]
         public SolidBrush brush;
         public Color color;
         public bool visible;
         public bool solid;
         public bool shouldHide;
         public bool roof;
+        [XmlIgnore]
         public TileLayer layer;
         public int opac;
+        public int layId;
         public List<Block> blocks;
+        public TileType type;
         
         public Tile()
         {
-
+            GetBrush();
         }
-        public Tile(int x, int y, int s, SolidBrush b, bool vis, bool sol, int hits, TileLayer l, bool isRoof = false)
+
+        public void GetBrush()
+        {
+
+            //brush = Brushes.brushBlack;
+            switch (type)
+            {
+                case TileType.DefaultWall:
+                    brush = Brushes.brushBlack;
+                    break;
+                case TileType.Door:
+                    brush = Brushes.brushOrange;
+                    break;
+                case TileType.Grass:
+                    brush = Brushes.brushGreen;
+                    break;
+                case TileType.WoodWall:
+                    brush = Brushes.brushBrown;
+                    break;
+                case TileType.StoneWall:
+                    brush = Brushes.brushSlateGray;
+                    break;
+                case TileType.Tree:
+                    brush = Brushes.brushBrown;
+                    break;
+                case TileType.TreeLeaves:
+                    brush = Brushes.brushTransDarkGreen;
+                    break;
+                case TileType.StoneRoof:
+                    brush = Brushes.brushSlateGray;
+                    break;
+                case TileType.WoodRoof:
+                    brush = Brushes.brushBrown;
+                    break;
+            }
+        }
+        public Tile(int x, int y, int s, SolidBrush b, bool vis, bool sol, int hits, TileLayer l, int layId, TileType type, bool isRoof = false)
         {
             this.layerX = x;
+            this.layId = layId;
             this.layerY = y;
             this.xOff = l.xMapOffset;
             this.yOff = l.yMapOffset;
@@ -65,16 +107,20 @@ namespace Destruct.Entities.TileMaps
             this.shouldHide = false;
             blocks = new List<Block>();
             brush = b;
+            this.type = type;
             blocks.Add(new Block(0, 0, size, brush));
         }
 
         public void Draw(Graphics g)
         {
-            foreach(Block b in blocks)
+            foreach(Block bb in blocks)
             {
+                GetBrush();
+                if (type == TileType.Blank)
+                    return;
                 brush.Color = Color.FromArgb(opac, brush.Color);
-                if(visible && getRect(b).IntersectsWith(new Rectangle(0,0,Globals.screenSize,Globals.screenSize)))
-                    g.FillRectangle(brush, getRect(b));
+                if(visible && getRect(bb).IntersectsWith(new Rectangle(0,0,Globals.screenSize,Globals.screenSize)))
+                    g.FillRectangle(brush, getRect(bb));
             }
         }
 

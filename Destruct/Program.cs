@@ -18,10 +18,13 @@ namespace Destruct
             Globals.scale = 2;
             Globals.defaultTileSize = 8;
             Globals.screenSize = 640;
+            Globals.renderArea = 640 * 3;
             Brushes.InitBrushes();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new GameForm());
+            Application.ExitThread();
+            Environment.Exit(0);
         }
     }
 }

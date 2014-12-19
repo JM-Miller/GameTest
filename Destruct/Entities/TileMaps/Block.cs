@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Destruct
 {
@@ -13,12 +14,13 @@ namespace Destruct
         public int yOff;
         public int size;
         public int screenSize;
+        [XmlIgnore]
         public Brush b;
 
         
         public Block()
         {
-
+            b = Brushes.brushBlack;
         }
 
         public Block(int x, int y, int s, Brush b)

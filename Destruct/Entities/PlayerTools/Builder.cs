@@ -90,8 +90,9 @@ namespace Destruct.Entities.PlayerTools
 
             if (PauseDone() && !active && building)
             {
-                foreach (TileLayer tl2 in p.map.layers)
+                for (int i = 0; i < p.map.layers.Count; i++)
                 {
+                    TileLayer tl2 = p.map.layers[i];
                     Rectangle rect = new Rectangle(tl2.xMapOffset * (Globals.defaultTileSize * Globals.scale) + p.map.xOffset - Globals.halfScreenSize, tl2.yMapOffset * (Globals.defaultTileSize * Globals.scale) + p.map.yOffset - Globals.halfScreenSize, tl2.tiles.Length * (Globals.defaultTileSize * Globals.scale), tl2.tiles.Length * (Globals.defaultTileSize * Globals.scale));
                     Rectangle interRect = new Rectangle(xPos - Globals.halfScreenSize, yPos - Globals.halfScreenSize, (Globals.defaultTileSize * Globals.scale), (Globals.defaultTileSize * Globals.scale));
                     if (rect.IntersectsWith(interRect))
@@ -101,7 +102,7 @@ namespace Destruct.Entities.PlayerTools
                         if (xCoord < 0 || xCoord > iTiles[0].Length - 1 || yCoord < 0 || yCoord > iTiles[0].Length - 1)
                             continue;
                         iTiles[0][xCoord][yCoord] = (int)type;
-                        p.map.layers.Add(new TileLayer(iTiles[0], tl2.size, tl2.xMapOffset, tl2.yMapOffset, p.map, 0, new List<Items.Item>()));
+                        p.map.layers.Add(new TileLayer(iTiles[0], tl2.size, tl2.xMapOffset, tl2.yMapOffset, p.map, 0, 0, new List<Items.Item>()));
                         active = true;
                         building = false;
                         numOfBlocks[type]--;
@@ -153,8 +154,9 @@ namespace Destruct.Entities.PlayerTools
                             pauseTime = 80;
                             break;
                 }
-                foreach (TileLayer tl2 in p.map.layers)
+                for (int i = 0; i < p.map.layers.Count; i++)
                 {
+                    TileLayer tl2 = p.map.layers[i];
                     Rectangle rect = new Rectangle(tl2.xMapOffset * (Globals.defaultTileSize * Globals.scale) + p.map.xOffset - Globals.halfScreenSize, tl2.yMapOffset * (Globals.defaultTileSize * Globals.scale) + p.map.yOffset - Globals.halfScreenSize, tl2.tiles.Length * (Globals.defaultTileSize * Globals.scale), tl2.tiles.Length * (Globals.defaultTileSize * Globals.scale));
                     Rectangle interRect = new Rectangle(xPos - Globals.halfScreenSize, yPos - Globals.halfScreenSize, (Globals.defaultTileSize * Globals.scale), (Globals.defaultTileSize * Globals.scale));
                     if (rect.IntersectsWith(interRect))

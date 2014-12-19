@@ -32,6 +32,7 @@ public static class Brushes
 public static class Globals
 {
     public static int halfScreenSize { get { return screenSize / 2; } }
+    public static int renderSize { get; set; }
     public static int defaultTileSize { get; set; }
     public static int screenSize { get; set; }
     public static int scale { get; set; }
@@ -39,6 +40,8 @@ public static class Globals
     public static int mouseY { get; set; }
     public static int speed { get; set; }
     public static int playerId { get; set; }
+
+    public static int renderArea { get; set; }
 }
 namespace Destruct
 {
@@ -69,8 +72,9 @@ namespace Destruct
 
         void step_Tick(object sender, EventArgs e)
         {
-            update();
             this.Invalidate();
+            update();
+            draw();
         }
 
         public void update()

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Destruct.Entities.TileMaps
 {
@@ -14,25 +15,30 @@ namespace Destruct.Entities.TileMaps
         public int size;
         public int cellId;
         public int health;
+        [XmlIgnore]
         public TileMap map;
         public bool isRoof;
         public int opac = 255;
+        [XmlIgnore]
         public List<Items.Item> items;
+        public int layId;
 
         public Tile[][] tiles;
 
         public TileLayer()
         {
-
+            items = new List<Items.Item>();
+            health = 100;
         }
 
-        public TileLayer(int[][] iTiles, int s, int xOff, int yOff, TileMap map, int cellId, List<Items.Item> items)
+        public TileLayer(int[][] iTiles, int s, int xOff, int yOff, TileMap map, int cellId, int layId, List<Items.Item> items)
         {
             this.size = s;
             this.xMapOffset = xOff;
             this.yMapOffset = yOff;
             this.map = map;
             this.cellId = cellId;
+            this.layId = layId;
             Create(iTiles);
             health = 100;
         }
@@ -73,34 +79,34 @@ namespace Destruct.Entities.TileMaps
                     switch (iTiles[x][y])
                     {
                         case (int)TileType.Blank:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBlack, false, false, 0, this);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBlack, false, false, 0, this, layId, TileType.Blank);
                             break;
                         case (int)TileType.DefaultWall:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBlack, true, true, 10, this);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBlack, true, true, 10, this, layId, TileType.DefaultWall);
                             break;
                         case (int)TileType.Door:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushOrange, true, false, 0, this);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushOrange, true, false, 0, this, layId, TileType.Door);
                             break;
                         case (int)TileType.Grass:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushGreen, true, false, 0, this);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushGreen, true, false, 0, this, layId, TileType.Grass);
                             break;
                         case (int)TileType.WoodWall:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBrown, true, true, 20, this);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBrown, true, true, 20, this, layId, TileType.WoodWall);
                             break;
                         case (int)TileType.StoneWall:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushSlateGray, true, true, 30, this);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushSlateGray, true, true, 30, this, layId, TileType.StoneWall);
                             break;
                         case (int)TileType.Tree:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBrown, true, true, 30, this);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBrown, true, true, 30, this, layId, TileType.Tree);
                             break;
                         case (int)TileType.TreeLeaves:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushTransDarkGreen, true, false, 0, this, true);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushTransDarkGreen, true, false, 0, this, layId, TileType.TreeLeaves, true);
                             break;
                         case (int)TileType.StoneRoof:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushSlateGray, true, false, 0, this, true);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushSlateGray, true, false, 0, this, layId, TileType.StoneRoof, true);
                             break;
                         case (int)TileType.WoodRoof:
-                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBrown, true, false, 0, this, true);
+                            tiles[x][y] = new Tile(y, x, size, Brushes.brushBrown, true, false, 0, this, layId, TileType.WoodRoof, true);
                             break;
                     }
                 }
