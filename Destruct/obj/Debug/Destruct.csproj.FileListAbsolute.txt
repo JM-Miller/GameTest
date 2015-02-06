@@ -55,3 +55,6 @@ H:\~~Senior\SideProjects\Destruct\GameTest\Destruct\obj\Debug\Destruct.csproj.Ge
 S:\2015\JMiller1\~~Senior\SideProjects\Destruct\GameTest\Destruct\bin\Debug\Destruct.exe.config
 S:\2015\JMiller1\~~Senior\SideProjects\Destruct\GameTest\Destruct\obj\Debug\Destruct.exe
 S:\2015\JMiller1\~~Senior\SideProjects\Destruct\GameTest\Destruct\obj\Debug\Destruct.pdb
+C:\Users\Jack\Documents\GitHub\GameTest\Destruct\bin\Debug\Destruct.exe.config
+C:\Users\Jack\Documents\GitHub\GameTest\Destruct\obj\Debug\Destruct.exe
+C:\Users\Jack\Documents\GitHub\GameTest\Destruct\obj\Debug\Destruct.pdb
