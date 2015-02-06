@@ -36,7 +36,7 @@ namespace Destruct.Entities.PlayerTools
 
         public void Draw(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(Color.Gold), (float)x, (float)y, size * Globals.scale, size * Globals.scale);
+            g.FillRectangle(new SolidBrush(Color.SlateGray), (float)x, (float)y, size * Globals.scale, size * Globals.scale);
         }
     }
 }

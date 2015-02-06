@@ -44,14 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Items\Ammo.cs" />
+    <Compile Include="Entities\Items\MoreRocks.cs" />
     <Compile Include="Entities\Items\BuildingSupplies.cs" />
-    <Compile Include="Entities\Items\GunPickUp.cs" />
+    <Compile Include="Entities\Items\RockPickUp.cs" />
     <Compile Include="Entities\Items\Item.cs" />
     <Compile Include="Entities\OtherPlayer.cs" />
     <Compile Include="Entities\PlayerTools\Builder.cs" />
     <Compile Include="Entities\PlayerTools\Bullet.cs" />
-    <Compile Include="Entities\PlayerTools\Gun.cs" />
+    <Compile Include="Entities\PlayerTools\RockThrowAbility.cs" />
     <Compile Include="Entities\TileMaps\Block.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Mouse.cs" />

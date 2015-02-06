@@ -48,14 +48,14 @@ namespace Destruct.Entities.TileMaps
                 {
                     if (iTiles[x][y] > 999)
                     {
-                        Items.Item i = new Items.Ammo(y, x, this, map.state.p); ;
+                        Items.Item i = new Items.MoreRocks(y, x, this, map.state.p); ;
                         switch (new Random().Next(0, 3))
                         {
                             case 0:
-                                i = new Items.GunPickUp(y, x, this);
+                                i = new Items.RockPickUp(y, x, this);
                                 break;
                             case 1:
-                                i = new Items.Ammo(y, x, this, map.state.p);
+                                i = new Items.MoreRocks(y, x, this, map.state.p);
                                 break;
                             case 2:
                                 i = new Items.BuildingSupplies(y, x, this, map.state.p);
@@ -108,6 +108,11 @@ namespace Destruct.Entities.TileMaps
         }
         public void Update(List<Items.Item> items)
         {
+            Rectangle rect = new Rectangle((this.xMapOffset * this.size * Globals.scale) + this.map.xOffset, (this.yMapOffset * this.size * Globals.scale) + this.map.yOffset, (this.tiles[0].Count() * this.size * Globals.scale), (this.tiles[0].Count() * this.size * Globals.scale));
+            if (!rect.IntersectsWith(new Rectangle(0, 0, Globals.screenSize, Globals.screenSize)) && !new Rectangle(0, 0, Globals.screenSize, Globals.screenSize).Contains(rect))
+            {
+                return;
+            }
             if (this.isRoof && health < 1)
                 this.opac = 0;
             for (int y = 0; y < tiles.Length; y++)
@@ -122,6 +127,11 @@ namespace Destruct.Entities.TileMaps
         }
         public void Draw(Graphics g)
         {
+            Rectangle rect = new Rectangle((this.xMapOffset * this.size * Globals.scale) + this.map.xOffset, (this.yMapOffset * this.size * Globals.scale) + this.map.yOffset, (this.tiles[0].Count() * this.size * Globals.scale), (this.tiles[0].Count() * this.size * Globals.scale));
+            if (!rect.IntersectsWith(new Rectangle(0, 0, Globals.screenSize, Globals.screenSize)) && !new Rectangle(0, 0, Globals.screenSize, Globals.screenSize).Contains(rect))
+            {
+                return;
+            }
             if (tiles.Any(j => j.Any(i => i.shouldHide)))
                 opac = 100;
             else
