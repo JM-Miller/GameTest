@@ -46,19 +46,19 @@ namespace Destruct.Entities.TileMaps
         {
             this.xOffset = x;
             this.yOffset = y;
-            foreach (TileLayer layer in layers)
+            foreach (TileLayer layer in GetCalcLayers())
                 layer.Update(items);
             GenTiles(items);
         }
         public void Draw(Graphics g)
         {
-            foreach (TileLayer layer in layers)
+            foreach (TileLayer layer in GetCalcLayers())
                 if(!layer.isRoof)
                     layer.Draw(g);
         }
         public void DrawRoof(Graphics g)
         {
-            foreach (TileLayer layer in layers)
+            foreach (TileLayer layer in GetCalcLayers())
                 if (layer.isRoof)
                     layer.Draw(g);
         }
@@ -73,12 +73,19 @@ namespace Destruct.Entities.TileMaps
         }
         public bool IsColAtRect(Rectangle rect, int xAdd, int yAdd)
         {
-            foreach (TileLayer l in layers)
+            foreach (TileLayer l in GetCalcLayers())
             {
                 if (l.IsColAtRect(rect, xAdd, yAdd))
                     return true;
             }
             return false;
+        }
+
+        public List<TileLayer> GetCalcLayers()
+        {
+            return layers.Where(layer => new Rectangle((layer.xMapOffset * layer.size * Globals.scale) + xOffset, (layer.yMapOffset * layer.size *
+                Globals.scale) + yOffset, (layer.tiles[0].Count() * layer.size * Globals.scale), (layer.tiles[0].Count() * layer.size * Globals.scale))
+                .IntersectsWith(new Rectangle(0, 0, Globals.screenSize, Globals.screenSize))).ToList();
         }
 
 
@@ -128,7 +135,7 @@ namespace Destruct.Entities.TileMaps
                 index++;
             }
             List<TileLayer> newVLayers = new List<TileLayer>();
-            foreach (TileLayer layer in layers)
+            foreach (TileLayer layer in GetCalcLayers())
             {
                 Rectangle rect = new Rectangle((layer.xMapOffset * layer.size * Globals.scale) + xOffset, (layer.yMapOffset * layer.size * Globals.scale) + yOffset, (layer.tiles[0].Count() * layer.size * Globals.scale), (layer.tiles[0].Count() * layer.size * Globals.scale));
                 if (rect.IntersectsWith(new Rectangle(0, 0, Globals.screenSize, Globals.screenSize)) || new Rectangle(0, 0, Globals.screenSize, Globals.screenSize).Contains(rect))

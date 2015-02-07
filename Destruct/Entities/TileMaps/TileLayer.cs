@@ -48,14 +48,14 @@ namespace Destruct.Entities.TileMaps
                 {
                     if (iTiles[x][y] > 999)
                     {
-                        Items.Item i = new Items.MoreRocks(y, x, this, map.state.p); ;
+                        Items.Item i = new Items.Ammo(y, x, this, map.state.p); ;
                         switch (new Random().Next(0, 3))
                         {
                             case 0:
-                                i = new Items.RockPickUp(y, x, this);
+                                i = new Items.GunPickUp(y, x, this);
                                 break;
                             case 1:
-                                i = new Items.MoreRocks(y, x, this, map.state.p);
+                                i = new Items.Ammo(y, x, this, map.state.p);
                                 break;
                             case 2:
                                 i = new Items.BuildingSupplies(y, x, this, map.state.p);

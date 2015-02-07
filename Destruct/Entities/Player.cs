@@ -13,8 +13,8 @@ namespace Destruct.Entities
     {
         public TileMaps.TileMap map;
         public int speed = 3;
-        public PlayerTools.RockThrowAbility activeGun;
-        public List<PlayerTools.RockThrowAbility> guns;
+        public PlayerTools.Gun activeGun;
+        public List<PlayerTools.Gun> guns;
         bool iskeySwitchDown = false;
         public Builder builder;
 
@@ -32,7 +32,7 @@ namespace Destruct.Entities
             this.y = Globals.halfScreenSize - (Globals.defaultTileSize * Globals.scale / 2);
             this.color = Color.Black;
             this.brush = new SolidBrush(color);
-            this.guns = new List<PlayerTools.RockThrowAbility>();
+            this.guns = new List<PlayerTools.Gun>();
             builder = new Builder();
         }
 
