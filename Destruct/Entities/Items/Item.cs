@@ -7,21 +7,46 @@ using System.Threading.Tasks;
 
 namespace Destruct.Entities.Items
 {
-    public abstract class Item
+    //Item to be picked up on map
+    public abstract class Item 
     {
-        public int x;
-        public int y;
-        public int xPos;
-        public int yPos;
-        public int xOff;
-        public int yOff;
-        public int w;
-        public int h;
-        public Rectangle rect { get { return new Rectangle(x, y, w * Globals.scale, h * Globals.scale); } }
-        public bool remove;
+        //Rectangle to draw/calculate
+        public Rectangle screenRectangle
+        {
+            get 
+            { 
+                return new Rectangle(screenX, screenY, size * Globals.scale, size * Globals.scale); 
+            }
+        }
+
+        //Check if this item should be removed on next iteration of the game loop
+        public bool ShouldRemove;
+
+        //X position relative to the screen
+        protected int screenX;
+        //Y position relative to the screen
+        protected int screenY;
+        //X coordinate of the tile, relative to the layer
+        protected int tileX;
+        //Y coordinate of the tile, relative to the layer
+        protected int tileY;
+        //X coordinate of the layer
+        protected int layerTileX;
+        //Y coordinate of the layer
+        protected int layerTileY;
+        //size of the tile (not scaled)
+        protected int size;
+
+        #region Game Loop Methods
+
         public abstract void Init();
-        public abstract void Update(Player p);
+        
+        public abstract void Update();
+        
         public abstract void Draw(Graphics g);
-        public abstract void DrawText(System.Drawing.Graphics g);
+        
+        public abstract void DrawOverLayer(System.Drawing.Graphics g);
+
+        #endregion
     }
 }

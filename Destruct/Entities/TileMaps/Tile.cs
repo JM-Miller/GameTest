@@ -86,6 +86,36 @@ namespace Destruct.Entities.TileMaps
                 visible = false;
         }
 
+        public bool CheckForColRel(Rectangle rect, int xAdd, int yAdd)
+        {
+            if (xAdd > 0)
+            {
+                rect.X -= xAdd;
+            }
+            else if (xAdd < 0)
+            {
+                rect.X -= xAdd;
+            }
+            if (yAdd > 0)
+            {
+                rect.Y -= yAdd + Globals.scale;
+            }
+            else if (yAdd < 0)
+            {
+                rect.Y -= yAdd + Globals.scale;
+            }
+            if (!this.solid && !this.roof)
+                return false;
+            for (int i = 0; i < blocks.Count; i++)
+            {
+                if (getRect(blocks[i]).IntersectsWith(rect) && solid && visible && !roof)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public bool CheckForCol(Rectangle rect, int xAdd, int yAdd)
         {
             if (!this.solid && !this.roof)

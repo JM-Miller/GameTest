@@ -39,6 +39,7 @@ public static class Globals
     public static int mouseY { get; set; }
     public static int speed { get; set; }
     public static int playerId { get; set; }
+    public static Rectangle screenRectangle { get; set; }
 }
 namespace Destruct
 {

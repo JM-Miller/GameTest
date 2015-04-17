@@ -45,8 +45,8 @@ namespace Destruct.GameStates
                 e.Update();
             for (int i = 0; i < items.Count; i++)
             {
-                items[i].Update(p);
-                if (items[i].remove)
+                items[i].Update();
+                if (items[i].ShouldRemove)
                     items.Remove(items[i]);
             }
             if (Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.ESC) && !isOldDownEsc)
@@ -71,7 +71,7 @@ namespace Destruct.GameStates
             if (p.activeGun != null)
                 p.activeGun.DrawAmmoText(g);
             foreach (Entities.Items.Item item in items)
-                item.DrawText(g);
+                item.DrawOverLayer(g);
             p.builder.DrawText(g);
         }
     }

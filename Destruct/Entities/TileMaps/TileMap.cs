@@ -81,6 +81,15 @@ namespace Destruct.Entities.TileMaps
             return false;
         }
 
+        public bool IsColAtRectRel(Rectangle rect, int xAdd, int yAdd)
+        {
+            foreach (TileLayer l in GetCalcLayers())
+            {
+                if (l.IsColAtRectRel(rect, xAdd, yAdd))
+                    return true;
+            }
+            return false;
+        }
         public List<TileLayer> GetCalcLayers()
         {
             return layers.Where(layer => new Rectangle((layer.xMapOffset * layer.size * Globals.scale) + xOffset, (layer.yMapOffset * layer.size *

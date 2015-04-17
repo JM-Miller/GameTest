@@ -105,6 +105,7 @@ namespace Destruct.Entities.PlayerTools
                         active = true;
                         building = false;
                         numOfBlocks[type]--;
+                        tl2.drawBound = true;
                         return;
                     }
                 }

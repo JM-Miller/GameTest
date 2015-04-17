@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Destruct.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,49 +10,66 @@ namespace Destruct.Entities.Items
 {
     public class Ammo : Item
     {
-        Player p;
-        public Ammo(int x, int y, TileMaps.TileLayer l, Player p)
+        //Player to calculate for
+        Player player;
+
+        /// <summary>
+        /// Sets all needed variables for Ammo object
+        /// </summary>
+        /// <param name="tileX">The X offset of the container tile</param>
+        /// <param name="tileY">The Y offset of the container tile</param>
+        /// <param name="containerLayer">The container tile's layer</param>
+        /// <param name="player">The player to calculate for</param>
+        public Ammo(int tileX, int tileY, ref TileMaps.TileLayer containerLayer, ref Player player)
         {
-            this.xPos = x;
-            this.yPos = y;
-            this.w = 2 * Globals.scale;
-            this.h = 2 * Globals.scale;
-            this.xOff = l.xMapOffset;
-            this.yOff = l.yMapOffset;
-            this.p = p;
-        }
-        public override void Init()
-        {
-            throw new NotImplementedException();
+            this.tileX = tileX;
+            this.tileY = tileY;
+            this.size = 2 * Globals.scale;
+            this.size = 2 * Globals.scale;
+            this.layerTileX = containerLayer.xMapOffset;
+            this.layerTileY = containerLayer.yMapOffset;
+            this.player = player;
         }
 
-        public override void Update(Player p)
+        public override void Init()
         {
-            if (remove)
+            //TODO: Reevaluate the need for Init step
+        }
+
+        public override void Update()
+        {
+            if (ShouldRemove) //If the item should be removed, do not calculate for it
                 return;
-            this.x = p.map.xOffset + (xPos * (Globals.defaultTileSize * Globals.scale)) + (xOff * (Globals.defaultTileSize * Globals.scale)) + (w * Globals.scale / 2);
-            this.y = p.map.yOffset + (yPos * (Globals.defaultTileSize * Globals.scale)) + (yOff * (Globals.defaultTileSize * Globals.scale)) + (h * Globals.scale / 2);
-            Rectangle screenRect = new Rectangle(Globals.halfScreenSize, Globals.halfScreenSize, rect.Width, rect.Height);
-            if (p.guns.Count > 0 && screenRect.IntersectsWith(rect) && Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Space))
+            //Calculate X and Y positions for object, relative to the screen
+            screenX = player.map.xOffset + (tileX * (Globals.defaultTileSize * Globals.scale)) + (layerTileX * (Globals.defaultTileSize * Globals.scale)) + (size * Globals.scale / 2);
+            screenY = player.map.yOffset + (tileY * (Globals.defaultTileSize * Globals.scale)) + (layerTileY * (Globals.defaultTileSize * Globals.scale)) + (size * Globals.scale / 2);
+
+            if (player.guns.Count > 0 && Globals.screenRectangle.IntersectsWith(screenRectangle) && Utilities.NativeKeyboard.IsKeyDown(Utilities.KeyCode.Space))
             {
-                remove = true;
-                PlayerTools.Gun g = p.guns[new Random().Next(0, p.guns.Count)];
-                g.totalAmmo += new Random().Next(1, g.ammoSize);
+                ShouldRemove = true; //Remove the item
+                PlayerTools.Gun gun = player.guns[new Random().Next(0, player.guns.Count)]; //Get a random gun held by the player
+                gun.totalAmmo += new Random().Next(1, gun.ammoSize); //Add a random ammount of ammo to that gun
             }
         }
 
         public override void Draw(System.Drawing.Graphics g)
         {
-            if (p.guns.Count > 0 )
-                g.FillRectangle(Brushes.brushBlack, rect);
+            if (player.guns.Count > 0) //If the player has a gun to put ammo in
+            g.FillRectangle(Brushes.brushBlack, screenRectangle);
         }
 
-        public override void DrawText(System.Drawing.Graphics g)
+        public override void DrawOverLayer(System.Drawing.Graphics g)
         {
-            Rectangle screenRect = new Rectangle(Globals.halfScreenSize, Globals.halfScreenSize, rect.Width, rect.Height);
-            if (p.guns.Count <= 0)
+
+
+            Rectangle screenRect = new Rectangle(Globals.halfScreenSize, Globals.halfScreenSize, screenRectangle.Width, screenRectangle.Height);
+            if (player.guns.Count <= 0)
                 return;
-            if (screenRect.IntersectsWith(rect))
+
+            if (!this.screenRectangle.IntersectsWith(Globals.screenRectangle))
+                return;
+
+            if (screenRect.IntersectsWith(this.screenRectangle))
             {
                 g.DrawString("Press SPACE to pick up\n" + "Ammo", new Font(FontFamily.GenericSansSerif, 5 * Globals.scale), new SolidBrush(Color.Black), new Point(Globals.halfScreenSize - (1 * Globals.scale), Globals.halfScreenSize - (20 * Globals.scale)));
             }

@@ -19,6 +19,8 @@ namespace Destruct.Entities.TileMaps
         public int opac = 255;
         public List<Items.Item> items;
 
+        public bool drawBound;
+
         public Tile[][] tiles;
 
         public TileLayer(int[][] iTiles, int s, int xOff, int yOff, TileMap map, int cellId, List<Items.Item> items)
@@ -48,18 +50,19 @@ namespace Destruct.Entities.TileMaps
                 {
                     if (iTiles[x][y] > 999)
                     {
-                        Items.Item i = new Items.Ammo(y, x, this, map.state.p); ;
-                        switch (new Random().Next(0, 3))
+                        var a = this;
+                        Items.Item i = new Items.Ammo(y, x, ref a, ref map.state.p); ;
+                        switch (new Random().Next(0, 1))
                         {
                             case 0:
-                                i = new Items.GunPickUp(y, x, this);
+                                i = new Items.GunPickUp(y, x, a, ref map.state.p);
                                 break;
-                            case 1:
-                                i = new Items.Ammo(y, x, this, map.state.p);
-                                break;
-                            case 2:
-                                i = new Items.BuildingSupplies(y, x, this, map.state.p);
-                                break;
+                            //case 1:
+                            //    i = new Items.Ammo(y, x, ref a, ref map.state.p);
+                            //    break;
+                            //case 2:
+                            //    i = new Items.BuildingSupplies(y, x, this, map.state.p);
+                            //    break;
                         }
                         this.items.Add(i);
                         items.Add(i);
@@ -122,12 +125,15 @@ namespace Destruct.Entities.TileMaps
                     tiles[x][y].Update(opac);
                 }
             }
+            if (items.Count > 0)
+                items[0].Update();
             items.AddRange(this.items);
             this.items.Clear();
         }
         public void Draw(Graphics g)
         {
             Rectangle rect = new Rectangle((this.xMapOffset * this.size * Globals.scale) + this.map.xOffset, (this.yMapOffset * this.size * Globals.scale) + this.map.yOffset, (this.tiles[0].Count() * this.size * Globals.scale), (this.tiles[0].Count() * this.size * Globals.scale));
+            
             if (!rect.IntersectsWith(new Rectangle(0, 0, Globals.screenSize, Globals.screenSize)) && !new Rectangle(0, 0, Globals.screenSize, Globals.screenSize).Contains(rect))
             {
                 return;
@@ -143,6 +149,9 @@ namespace Destruct.Entities.TileMaps
                     tiles[x][y].Draw(g);
                 }
             }
+
+            if (drawBound)
+                g.DrawRectangle(new Pen(new SolidBrush(Color.Red)), rect);
         }
         public bool IsColAtRect(Rectangle rect, int xAdd, int yAdd)
         {
@@ -153,6 +162,20 @@ namespace Destruct.Entities.TileMaps
                 for (int j = 0; j < tiles[i].Length; j++)
                 {
                     if (tiles[j][i].CheckForCol(rect, xAdd, yAdd))
+                        return true;
+                }
+            }
+            return false;
+        }
+        public bool IsColAtRectRel(Rectangle rect, int xAdd, int yAdd)
+        {
+            int xPos = (rect.X / (size * Globals.scale) + xMapOffset);
+            int yPos = (rect.Y / (size * Globals.scale) + yMapOffset);
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                for (int j = 0; j < tiles[i].Length; j++)
+                {
+                    if (tiles[j][i].CheckForColRel(rect, xAdd, yAdd))
                         return true;
                 }
             }
